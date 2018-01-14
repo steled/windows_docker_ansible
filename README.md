@@ -1,0 +1,1 @@
+Documentation of installation for [Docker-Windows-Container mit Ansible managen](https://www.heise.de/developer/artikel/Docker-Windows-Container-mit-Ansible-managen-1-2-3824736.html)
