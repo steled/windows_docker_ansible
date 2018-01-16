@@ -19,6 +19,14 @@ hostnamectl status
 sudo yum update
 ```
 
+## Python PIP Installation
+```bash
+sudo rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm
+sudo yum update
+sudo yum install python-pip
+sudo pip install --upgrade pip
+```
+
 # Ansible Master Installation
 - Cent OS 7 - Minimal Installation
 - [VMware Tools Installation](#vmware-tools-installation)
@@ -32,6 +40,7 @@ sudo yum update
 - [Add sudo privileges](#add-sudo-privileges)
 - [Set hostname](#set-hostname)
 - [Update all installed packages](#update-all-installed-packages)
+- [Python PIP Installation](#python-pip-installation)
 
 ## Installation
 
@@ -127,6 +136,7 @@ git config --global user.email <e-mail>
 ### Ansible Installation
 ```bash
 sudo yum install ansible
+sudo pip install pywinrm
 ```
 
 ## Configuration
@@ -140,6 +150,31 @@ mkdir iso
 
 creating windows-vagrant-box by packer
 ```bash
-cd ~/ansible-windows-docker-springboot/step0-packer-windows-vagrantbox
+cd ~/ansible-windows-docker-springboot/step0-packer-windows-vagrantbox/
 packer.io build -var iso_url=../../iso/14393.0.161119-1705.RS1_REFRESH_SERVER_EVAL_X64FRE_EN-US.ISO windows_server_2016_docker.json
+vagrant init windows_2016_docker_virtualbox.box
+```
+
+starting windows-vagrant-box
+```bash
+cd ~/ansible-windows-docker-springboot/step0-packer-windows-vagrantbox/
+vagrant up
+```
+
+test working configuration
+```bash
+cd ~/ansible-windows-docker-springboot/step0-packer-windows-vagrantbox/ansible-windows-simple
+ansible windows-dev -i hostsfile -m win_ping
+```
+
+install firefox
+```bash
+cd ~/ansible-windows-docker-springboot/step0-packer-windows-vagrantbox/ansible-windows-simple
+ansible-playbook -i hostsfile windows-playbook.yml --extra-vars "host=windows-dev"
+```
+
+install docker
+```bash
+cd ~/ansible-windows-docker-springboot/step1-prepare-docker-windows/
+ansible-playbook -i hostsfile prepare-docker-windows.yml --extra-vars "host=ansible-windows-docker-springboot-dev"
 ```
